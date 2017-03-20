@@ -4,6 +4,8 @@
 
 // Board constructor
 function Board(boardTitle) {
+    var boardDate = new Date();
+    this.boardId = boardDate.valueOf();
     this.boardTitle = boardTitle;
     this.cardList = [];
 }
@@ -12,12 +14,14 @@ function Board(boardTitle) {
 var boardOne = new Board('My first board');
 console.log(boardOne.boardTitle);
 console.log(boardOne.cardList);
+console.log(boardOne.boardId);
 
 // Card constructor
 function Card(cardTitle) {
     this.cardTitle = cardTitle;
     this.content = [];
-    this.date = Date();
+    this.cardDate = new Date();
+    this.cardId = this.cardDate.valueOf();
     this.status = "new";
 }
 
@@ -26,4 +30,5 @@ Card.prototype = new Board();
 //object example
 var card = new Card('First card')
 console.log(card.status);
-console.log(card.date);
+console.log(card.cardDate);
+console.log(card.cardId);
