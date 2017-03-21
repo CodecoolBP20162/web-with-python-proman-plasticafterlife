@@ -41,3 +41,21 @@ saveLocal(One);
 
 saveLocal(boardTwo);
 readLocal(boardTwo);
+
+
+
+function listBoards() {
+    for (var key in localStorage) {
+        var board = readLocal(key);
+        for (i in board) {
+            console.log(board[i]);
+        };
+    };
+};
+
+listBoards();
+
+function createBoard() {
+
+
+};
