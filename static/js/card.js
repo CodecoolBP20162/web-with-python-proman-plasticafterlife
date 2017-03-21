@@ -1,6 +1,6 @@
 
 // Card constructor
-function Card(cardTitle) {
+function Card() {
     this.cardDate = new Date();
     this.cardId = this.cardDate.valueOf();
     this.content = "";
@@ -18,26 +18,29 @@ var card = new Card('First card');
 
 $(document).ready(function() {
 
-    var saveCard = function(statusObj, cardObject) {        // Save card in status function
-        statusObj.cardList.push(cardObject);
+    var addContentToCard = function() {
+        var userInput = document.getElementById('new_task');            // select the input field element
+        var cardObj = new Card();                                       // create a card object
+        cardObj.content += userInput.value;
+        return cardObj
     };
 
-    var addContentToCard = function(cardObj, content) {     // add content to the cardObj - ect
-        cardObj.content += content.value;
+    var insertToBody = function(){
+        var $statusClass = $("#new_status");
+        $statusClass.prepend("<label class='control-label'><input class='form-group' type='text' placeholder='Add a new task' id='new_task'></label>");
     };
 
-    var $saveButton = $("#save_button");    // select the save_button then call the saveCard function
-    $saveButton.click(function () {
-        var inputTask = document.getElementById('new_task');      // select the input field element
-        addContentToCard(card, inputTask);                  // save to content
+    $("button").click(function () {
+        var cardObject = addContentToCard();                  // save to content
+        console.log(cardObject.content)
+        insertToBody();
+    });
 
-        saveCard(newStatus, card);
 
-        console.log(newStatus.cardList);
-        console.log("Save something");
-    });    // end of save function
 
 });
+
+
 
 
 
