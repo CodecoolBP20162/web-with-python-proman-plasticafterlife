@@ -1,4 +1,3 @@
-
 // Card constructor
 function Card() {
     this.cardDate = new Date();
@@ -12,33 +11,54 @@ function Status(statusTitle) {
     this.cardList = [];
 };
 
-//status and card instance
-var newStatus = new Status('new');
-var card = new Card('First card');
+$(document).ready(function () {
+    var newStatus = new Status("new");
+    var planningStatus = new Status("planning");
+    var inprogressStatus = new Status("inprogress");
+    var doneStatus = new Status("done");
 
-$(document).ready(function() {
-
-    var addContentToCard = function() {
-        var userInput = document.getElementById('new_task');            // select the input field element
+    var addContentToCard = function (status) {
+        var chosenStatus = status.statusTitle + 'StatusTask';
+        var userInput = document.getElementById(chosenStatus);           // select the input field element
         var cardObj = new Card();                                       // create a card object
         cardObj.content += userInput.value;
         return cardObj
-    };
+        };
 
-    var insertToBody = function(){
-        var $statusClass = $("#new_status");
-        $statusClass.prepend("<label class='control-label'><input class='form-group' type='text' placeholder='Add a new task' id='new_task'></label>");
-    };
+    var insertToBody = function (status, cardObject) {
+        var chosenStatusId = "#" + status.statusTitle + "Status";
+        var $statusClass = $(chosenStatusId);
+        var inputId = cardObject.cardId; // the current task id
 
-    $("button").click(function () {
-        var cardObject = addContentToCard();                  // save to content
-        console.log(cardObject.content)
-        insertToBody();
-    });
+        $statusClass.prepend("<label class='control-label'><input class='form-group' type='text' placeholder='Add a new task' id='"
+            + inputId + "'></label>");
+        };
 
 
+    $("#saveToNew").click(function (status) {
+        var cardObject = addContentToCard(newStatus);
+        insertToBody(newStatus, cardObject);
+        });
 
+    $("#saveToPlanning").click(function (status) {
+        var cardObject = addContentToCard(planningStatus);
+        insertToBody(planningStatus, cardObject);
+        });
+
+    $("#saveToInprogress").click(function (status) {
+        var cardObject = addContentToCard(inprogressStatus);
+        insertToBody(inprogressStatus, cardObject);
+        });
+
+    $("#saveToDone").click(function (status) {
+        var cardObject = addContentToCard(doneStatus);
+        insertToBody(doneStatus, cardObject);
+        });
 });
+
+
+
+
 
 
 
