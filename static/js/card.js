@@ -12,6 +12,7 @@ function Status(statusTitle) {
 };
 
 $(document).ready(function () {
+
     var newStatus = new Status("new");
     var planningStatus = new Status("planning");
     var inprogressStatus = new Status("inprogress");
@@ -31,6 +32,7 @@ $(document).ready(function () {
     newStatus.cardList.push(exampleCard3);
 
 
+
     var addContentToCard = function (status) {
         var chosenStatus = status.statusTitle + 'StatusTask';
         var userInput = document.getElementById(chosenStatus);           // select the input field element
@@ -45,12 +47,12 @@ $(document).ready(function () {
         var inputId = cardObject.cardId; // the current task id
         var cardContent = cardObject.content;
 
-        $statusClass.prepend("<p class='form-group' type='text' placeholder='Add a new task' id='"
-            + inputId + "'>" + cardContent + "</p>");
+        $statusClass.prepend("<div id='menu'><p class='form-group' type='text' placeholder='Add a new task' id='"
+            + inputId + "'>" + cardContent + "</p></div>");
         };
 
     var listCards = function (statusObject) {
-        for (i = 0; i < statusObject.cardList.length; i++) {
+        for (var i = 0; i < statusObject.cardList.length; i++) {
             console.log(statusObject.cardList[i]);
             insertToBody(statusObject, statusObject.cardList[i])
         };
