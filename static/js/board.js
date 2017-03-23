@@ -1,3 +1,11 @@
+
+// status constructor
+function Status(statusTitle) {
+    this.statusTitle = statusTitle;
+    this.cardList = [];
+};
+
+
 // Card constructor
 function Card() {
     this.cardDate = new Date();
@@ -5,11 +13,53 @@ function Card() {
     this.content = "";
 };
 
-$(document).ready(function () {
+// Board constructor
+function Board(boardTitle) {
+    var boardDate = new Date();
+    this.boardId = boardDate.valueOf();
+    this.boardTitle = boardTitle;
     var newStatus = new Status("new");
     var planningStatus = new Status("planning");
     var inprogressStatus = new Status("inprogress");
     var doneStatus = new Status("done");
+    this.statusList = [newStatus, planningStatus, inprogressStatus, doneStatus]
+}
+
+// object example
+var boardOne = new Board('My first board');
+console.log(boardOne.boardTitle);
+console.log(boardOne.statusList);
+console.log(boardOne.boardId);
+console.log(boardOne.statusList);
+
+var boardTwo = new Board('Second board')
+
+
+function readLocal(boardID) {
+    var ID = boardID;
+    var retrieve = JSON.parse(localStorage.getItem(ID));
+    return retrieve;
+}
+
+function saveLocal(boardObject) {
+    var boardJS = JSON.stringify(boardObject);
+    var ID = boardObject.boardId
+    localStorage.setItem(ID, boardJS);
+}
+
+$(document).ready(function () {
+    function listBoards() {
+        for (var key in localStorage) {
+            var board = readLocal(key);
+            $("#board").append("<div id='boardTitle'>" + board.boardTitle + "</div>");
+            $("#card_details").click(function () {
+                $("div").html(board.statusList);
+                console.log(board.length)
+            });
+
+
+        };
+    };
 
     var addContentToCard = function (status) {
         var chosenStatus = status.statusTitle + 'StatusTask';
@@ -55,77 +105,6 @@ $(document).ready(function () {
 
 
 
-// status constructor
-function Status(statusTitle) {
-    this.statusTitle = statusTitle;
-    this.cardList = new Card();
-};
-
-//Criterium list
-
-var criteriumList = ['New', 'In progress', 'Review', 'Done'];
-
-//status list
-var statusNew = new Status(criteriumList[0]);
-var statusProgress = new Status(criteriumList[1]);
-var statusReview = new Status(criteriumList[2]);
-var statusDone = new Status(criteriumList[3]);
-
-//Card separator
-function getDataToStatus(data) {
-
-    switch (data) {
-        case criteriumList[1]:
-            alert('case 1');
-            break;
-        case criteriumList[2]:
-            alert('case 2');
-            break;
-        case criteriumList[3]:
-            alert('case 3');
-            break;
-        default:
-            alert('default');
-
-    }
-}
-
-
-
-/**
- * Created by keli on 2017.03.20..
- */
-
-// Board constructor
-function Board(boardTitle) {
-    var boardDate = new Date();
-    this.boardId = boardDate.valueOf();
-    this.boardTitle = boardTitle;
-    this.statusList = new Status();
-}
-
-// object example
-var boardOne = new Board('My first board');
-console.log(boardOne.boardTitle);
-console.log(boardOne.statusList);
-console.log(boardOne.boardId);
-
-var boardTwo = new Board('Second board')
-
-
-//functions for localStorage
-
-function readLocal(boardID) {
-    var ID = boardID;
-    var retrieve = JSON.parse(localStorage.getItem(ID));
-    return retrieve;
-}
-
-function saveLocal(boardObject) {
-    var boardJS = JSON.stringify(boardObject);
-    var ID = boardObject.boardId
-    localStorage.setItem(ID, boardJS);
-}
 
 //example
 // saveLocal(boardOne);
@@ -135,22 +114,6 @@ function saveLocal(boardObject) {
 
 // saveLocal(boardTwo);
 // readLocal(boardTwo);
-
-
-$(document).ready(
-    function listBoards() {
-        for (var key in localStorage) {
-            var board = readLocal(key);
-            $("#board").append("<div id='boardTitle'>" + board.boardTitle + "</div>");
-            $("button").click(function () {
-                $("div").html(board.boardTitle);
-                console.log(board.length)
-            });
-
-
-        };
-    });
-
 
 
 
