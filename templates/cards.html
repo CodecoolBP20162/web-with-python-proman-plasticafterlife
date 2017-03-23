@@ -1,8 +1,52 @@
 {% extends "index.html" %}
 
 {% block content %}
-    <div>
-        Ide jönnek majd status-ok a megfelelő card-okkal
+    <div class="modal-header">
+        Status - with cards
+    </div>
+
+    <div style="display: inline-block;">
+        <div class="status">
+            <h4 class="modal-header"><strong>New status</strong></h4>
+                <label class="control-label"><input class="form-group" type="text" placeholder="Add a new task" id="newStatusTask">
+                    <!--<img src="/static/img/edit-icon.ico" id="edit-icon"> -->
+                </label>
+
+            <div id="newStatus">
+                <button type="button" class="btn btn-success" id="saveToNew">Save</button>
+            </div>
+        </div>
+
+
+        <div class="status">
+            <h4 class="modal-header"><strong>Planning status</strong></h4>
+            <label class="control-label"><input class="form-group" type="text" placeholder="Add a new task" id="planningStatusTask"></label>
+
+            <div id="planningStatus">
+                <button type="button" class="btn btn-success" id ="saveToPlanning">Save</button>
+            </div>
+        </div>
+
+
+        <div class="status">
+            <h4 class="modal-header"><strong>In progress status</strong></h4>
+            <label class="control-label"><input class="form-group" type="text" placeholder="Add a new task" id="inprogressStatusTask"></label>
+
+            <div id="inprogressStatus">
+                <button type="button" class="btn btn-success" id ="saveToInprogress">Save</button>
+            </div>
+        </div>
+
+
+        <div class="status">
+            <h4 class="modal-header"><strong>Done status</strong></h4>
+            <label class="control-label"><input class="form-group" type="text" placeholder="Add a new task" id="doneStatusTask"></label>
+
+            <div id="doneStatus">
+                <button type="button" class="btn btn-success" id ="saveToDone">Save</button>
+            </div>
+        </div>
+    <p id="ASD">ASD</p>
     </div>
 
 {% endblock %}
