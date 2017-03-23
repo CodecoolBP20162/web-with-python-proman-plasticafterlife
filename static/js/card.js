@@ -34,6 +34,9 @@ $(document).ready(function () {
             + inputId + "'></label>");
         };
 
+    // var updateContent = function(cardId) {
+    //     $('')
+    // };
 
     $("#saveToNew").click(function (status) {
         var cardObject = addContentToCard(newStatus);
