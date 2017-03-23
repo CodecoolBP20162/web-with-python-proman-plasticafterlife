@@ -17,6 +17,20 @@ $(document).ready(function () {
     var inprogressStatus = new Status("inprogress");
     var doneStatus = new Status("done");
 
+    // define 3 card object, fill the content and add to the example status object cardList
+    var exampleCard = new Card();
+    var exampleCard2 = new Card();
+    var exampleCard3 = new Card();
+
+    exampleCard.content = "proba task";
+    exampleCard2.content = "proba task2";
+    exampleCard3.content = "proba task3";
+
+    doneStatus.cardList.push(exampleCard);
+    doneStatus.cardList.push(exampleCard2);
+    newStatus.cardList.push(exampleCard3);
+
+
     var addContentToCard = function (status) {
         var chosenStatus = status.statusTitle + 'StatusTask';
         var userInput = document.getElementById(chosenStatus);           // select the input field element
@@ -32,8 +46,19 @@ $(document).ready(function () {
         var cardContent = cardObject.content;
 
         $statusClass.prepend("<p class='form-group' type='text' placeholder='Add a new task' id='"
-            + "valami" + "'>" + cardContent + "</p>");
+            + inputId + "'>" + cardContent + "</p>");
         };
+
+    var listCards = function (statusObject) {
+        for (i = 0; i < statusObject.cardList.length; i++) {
+            console.log(statusObject.cardList[i]);
+            insertToBody(statusObject, statusObject.cardList[i])
+        };
+    };
+
+    // call the listCard with the example statusObject
+    listCards(doneStatus);
+    listCards(newStatus);
 
 
     $("#saveToNew").click(function (status) {
