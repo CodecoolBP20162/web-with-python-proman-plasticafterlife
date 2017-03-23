@@ -21,8 +21,22 @@
     color: #34722f;
 }
 
-#test{
 
+.status {
+    display:inline-block;
 
+    height: auto;
+    width: 200px;
+    background-color: #2e6da4;
+}
+
+#edit-icon {
+    color: red;
+    height: 20px;
+    width: 20px;
+}
+
+.bin-icon:hover {
+    color: red;
 }
 
