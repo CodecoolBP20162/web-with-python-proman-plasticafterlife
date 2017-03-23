@@ -29,14 +29,12 @@ $(document).ready(function () {
         var chosenStatusId = "#" + status.statusTitle + "Status";
         var $statusClass = $(chosenStatusId);
         var inputId = cardObject.cardId; // the current task id
+        var cardContent = cardObject.content;
 
-        $statusClass.prepend("<label class='control-label'><input class='form-group' type='text' placeholder='Add a new task' id='"
-            + inputId + "'></label>");
+        $statusClass.prepend("<p class='form-group' type='text' placeholder='Add a new task' id='"
+            + "valami" + "'>" + cardContent + "</p>");
         };
 
-    // var updateContent = function(cardId) {
-    //     $('')
-    // };
 
     $("#saveToNew").click(function (status) {
         var cardObject = addContentToCard(newStatus);
