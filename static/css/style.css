@@ -1,12 +1,17 @@
+.body, .html{
+    background: #424242;
+}
 #logo_landing{
     text-align: center;
     margin-top: 15%;
 }
-
+#logo_logo{
+    padding-left: 165px;
+    height: 17px;
+}
 #block1, #block2, #block3{
     display:inline-block;
     vertical-align: middle;
-    padding-top: 5px;
 }
 
 #block2{
@@ -14,5 +19,10 @@
     font-weight: 500;
     font-size: 35px;
     color: #34722f;
+}
+
+#test{
+
+
 }
 
