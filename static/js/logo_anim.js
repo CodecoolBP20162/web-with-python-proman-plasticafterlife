@@ -15,5 +15,25 @@ var str = "<div id='block1'> <img src='../static/img/left_part.png' alt='logo_le
 
     if (isTag) return type();
     setTimeout(type, 100);
+
 }());
 
+var el = document.getElementById("logo_logo");
+
+function fadeIn(el) {
+  el.style.opacity = 0;
+
+
+  var tick = function() {
+    el.style.opacity = +el.style.opacity + 0.01;
+
+
+    if (+el.style.opacity < 1) {
+      (window.requestAnimationFrame && requestAnimationFrame(tick)) || setTimeout(tick, 15000)
+    }
+  };
+
+  tick();
+}
+
+fadeIn(el);
