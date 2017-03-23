@@ -4,7 +4,6 @@ function Status(statusTitle) {
     this.cardList = [];
 };
 
-
 // Card constructor
 function Card() {
     this.cardDate = new Date();
@@ -24,20 +23,28 @@ function Board(boardTitle) {
     this.statusList = [newStatus, planningStatus, inprogressStatus, doneStatus]
 }
 
-// object example
-var boardOne = new Board('My first board');
-console.log(boardOne.boardTitle);
-console.log(boardOne.statusList);
-console.log(boardOne.boardId);
-console.log(boardOne.statusList);
-var boardTwo = new Board('Second board');
-
-
-function readLocal(boardID) {
-    var ID = boardID;
-    var retrieve = JSON.parse(localStorage.getItem(ID));
-    return retrieve;
+function Controller(){
+    this.addNewBoards function addNewBoards(boardTitle) {
+        var newBoard = new Board(boardTitle);
+        return newBoard;
+};
 }
+
+
+
+function checkLocalStorage(){
+    var boards = [];
+    if (localStorage.length > 0) {
+        for (var i = 0; i < localStorage.length; i++) {
+            var boardId = localStorage.key(i);
+            var element = JSON.parse(localStorage.getItem(localStorage.key(i)));
+            //var boardObject = {boardId: element};
+
+            boards.push(element);
+            }
+        }
+    return boards;
+};
 
 function saveLocal(boardObject) {
     var boardJS = JSON.stringify(boardObject);
@@ -45,105 +52,107 @@ function saveLocal(boardObject) {
     localStorage.setItem(ID, boardJS);
 }
 
-var listStatus = function (rawBoardId) {
-    var statusList = []
-    var boardId = rawBoardId.slice(8);
-
-    boardObject = readLocal(boardId);
-    for (var status in boardObject.statusList) {
-        statusList.push(status)
-        console.log(status)
-    };
-    //console.log(statusList);
+function insertNewBoard(boardObject) {
+    $('#addNewBoards').after("<div><p id='" + boardObject.boardId + "'>" + boardObject.boardTitle + "</p></div>");
 }
-        // for (var i = 0; i < statusObject.cardList.length; i++) {
-        //     console.log(statusObject.cardList[i]);
-        //     insertToBody(statusObject, statusObject.cardList[i])
-        // };
+
+function listBoards(boardsList){
+    for (var i = 0; i < boardsList.length; i++) {
+        var board = boardsList[i];
+        insertNewBoard(board);
+    }
+}
+
 
 $(document).ready(function () {
 
-    function listBoards() {
-        for (var key in localStorage) {
-            var board = readLocal(key);
+    // var elsoBoard = new Board("masodik board");
+    // saveLocal(elsoBoard);
+    var boardObjects = checkLocalStorage();
+    listBoards(boardObjects);
 
-            $("#board").append("<div id='boardTitle'>" + board.boardTitle +
-                "<button id='details_" + board.boardId + "' onclick='listStatus(this.id)'>Details</button>" +
-                "</div>");
-
-            $("#card_details").click(function () {
-                window.location.replace('http://127.0.0.1:5000/cards');
-                // $("div").html(board.statusList);
-                console.log(board.length)
-            });
-        };
-    };
-
-    listBoards();
-
-    // var listCards = function (statusObject) {
-    //     console.log(statusObject)
-    //     for (var i = 0; i < statusObject.cardList.length; i++) {
-    //         console.log(statusObject.cardList[i]);
-    //         insertToBody(statusObject, statusObject.cardList[i])
-    //     };
-    // };
-
-    var addContentToCard = function (status) {
-        var chosenStatus = status.statusTitle + 'StatusTask';
-        var userInput = document.getElementById(chosenStatus);           // select the input field element
-        var cardObj = new Card();                                       // create a card object
-        cardObj.content += userInput.value;
-        return cardObj
-    };
-
-    var insertToBody = function (status, cardObject) {
-        var chosenStatusId = "#" + status.statusTitle + "Status";
-        var $statusClass = $(chosenStatusId);
-        var inputId = cardObject.cardId; // the current task id
-        var cardContent = cardObject.content;
-
-        $statusClass.prepend("<p class='form-group' type='text' placeholder='Add a new task' id='"
-            + "valami" + "'>" + cardContent + "</p>");
-    };
+    $('#addNewBoards').click(function(){
+        var inputBoardsTitle = document.getElementById('newBoard').value;
+        var addedBoard = addNewBoards(inputBoardsTitle);
+        insertNewBoard(addedBoard);
+        saveLocal(addedBoard);
+        });
 
 
-    $("#saveToNew").click(function (status) {
-        var cardObject = addContentToCard(newStatus);
-        insertToBody(newStatus, cardObject);
-    });
-
-    $("#saveToPlanning").click(function (status) {
-        var cardObject = addContentToCard(planningStatus);
-        insertToBody(planningStatus, cardObject);
-    });
-
-    $("#saveToInprogress").click(function (status) {
-        var cardObject = addContentToCard(inprogressStatus);
-        insertToBody(inprogressStatus, cardObject);
-    });
-
-    $("#saveToDone").click(function (status) {
-        var cardObject = addContentToCard(doneStatus);
-        insertToBody(doneStatus, cardObject);
-    });
 });
 
 
+// for (var i = 0; i < statusObject.cardList.length; i++) {
+//     console.log(statusObject.cardList[i]);
+//     insertToBody(statusObject, statusObject.cardList[i])
+// };
 
-
-
-
-//example
-// saveLocal(boardOne);
-// var One = readLocal(boardOne.boardId);
-// One.statusList.push("jeee");
-// saveLocal(One);
-
-// saveLocal(boardTwo);
-// readLocal(boardTwo);
-
-
-
-function createBoard() { }
+//
+// $(document).ready(function () {
+//
+//     function listBoards() {
+//         for (var key in localStorage) {
+//             var board = readLocal(key);
+//
+//             $("#board").append("<div id='boardTitle'>" + board.boardTitle +
+//                 "<button id='details_" + board.boardId + "' onclick='listStatus(this.id)'>Details</button>" +
+//                 "</div>");
+//
+//             $("#card_details").click(function () {
+//                 window.location.replace('http://127.0.0.1:5000/cards');
+//                 // $("div").html(board.statusList);
+//                 console.log(board.length)
+//             });
+//         };
+//     };
+//
+//     listBoards();
+//
+//     // var listCards = function (statusObject) {
+//     //     console.log(statusObject)
+//     //     for (var i = 0; i < statusObject.cardList.length; i++) {
+//     //         console.log(statusObject.cardList[i]);
+//     //         insertToBody(statusObject, statusObject.cardList[i])
+//     //     };
+//     // };
+//
+//     var addContentToCard = function (status) {
+//         var chosenStatus = status.statusTitle + 'StatusTask';
+//         var userInput = document.getElementById(chosenStatus);           // select the input field element
+//         var cardObj = new Card();                                       // create a card object
+//         cardObj.content += userInput.value;
+//         return cardObj
+//     };
+//
+//     var insertToBody = function (status, cardObject) {
+//         var chosenStatusId = "#" + status.statusTitle + "Status";
+//         var $statusClass = $(chosenStatusId);
+//         var inputId = cardObject.cardId; // the current task id
+//         var cardContent = cardObject.content;
+//
+//         $statusClass.prepend("<p class='form-group' type='text' placeholder='Add a new task' id='"
+//             + "valami" + "'>" + cardContent + "</p>");
+//     };
+//
+//
+//     $("#saveToNew").click(function (status) {
+//         var cardObject = addContentToCard(newStatus);
+//         insertToBody(newStatus, cardObject);
+//     });
+//
+//     $("#saveToPlanning").click(function (status) {
+//         var cardObject = addContentToCard(planningStatus);
+//         insertToBody(planningStatus, cardObject);
+//     });
+//
+//     $("#saveToInprogress").click(function (status) {
+//         var cardObject = addContentToCard(inprogressStatus);
+//         insertToBody(inprogressStatus, cardObject);
+//     });
+//
+//     $("#saveToDone").click(function (status) {
+//         var cardObject = addContentToCard(doneStatus);
+//         insertToBody(doneStatus, cardObject);
+//     });
+// });
 
