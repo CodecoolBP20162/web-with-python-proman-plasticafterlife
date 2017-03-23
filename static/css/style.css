@@ -1,12 +1,17 @@
+.body, .html{
+    background: #424242;
+}
 #logo_landing{
     text-align: center;
     margin-top: 15%;
 }
-
+#logo_logo{
+    padding-left: 165px;
+    height: 17px;
+}
 #block1, #block2, #block3{
     display:inline-block;
     vertical-align: middle;
-    padding-top: 5px;
 }
 
 #block2{
@@ -14,5 +19,24 @@
     font-weight: 500;
     font-size: 35px;
     color: #34722f;
+}
+
+
+.status {
+    display:inline-block;
+
+    height: auto;
+    width: 200px;
+    background-color: #2e6da4;
+}
+
+#edit-icon {
+    color: red;
+    height: 20px;
+    width: 20px;
+}
+
+.bin-icon:hover {
+    color: red;
 }
 
