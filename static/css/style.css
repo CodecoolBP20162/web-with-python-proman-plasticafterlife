@@ -30,13 +30,13 @@
     background-color: #2e6da4;
 }
 
-#edit-icon {
+#edit-button {
     color: red;
     height: 20px;
     width: 20px;
 }
 
-.bin-icon:hover {
+#edit-icon:hover {
     color: red;
 }
 

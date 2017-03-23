@@ -12,7 +12,6 @@ function Status(statusTitle) {
 };
 
 $(document).ready(function () {
-
     var newStatus = new Status("new");
     var planningStatus = new Status("planning");
     var inprogressStatus = new Status("inprogress");
@@ -47,8 +46,11 @@ $(document).ready(function () {
         var inputId = cardObject.cardId; // the current task id
         var cardContent = cardObject.content;
 
-        $statusClass.prepend("<div id='menu'><p class='form-group' type='text' placeholder='Add a new task' id='"
-            + inputId + "'>" + cardContent + "</p></div>");
+        // $statusClass.prepend("<p class='form-group' type='text' placeholder='Add a new task' id='"
+        //     + inputId + "'>" + cardContent + "</p>");
+
+        $statusClass.prepend("<p class='form-group' type='text' placeholder='Add a new task' id='"
+            + inputId + "'>" + cardContent + "</p>")
         };
 
     var listCards = function (statusObject) {
@@ -61,7 +63,6 @@ $(document).ready(function () {
     // call the listCard with the example statusObject
     listCards(doneStatus);
     listCards(newStatus);
-
 
     $("#saveToNew").click(function (status) {
         var cardObject = addContentToCard(newStatus);
@@ -83,6 +84,8 @@ $(document).ready(function () {
         insertToBody(doneStatus, cardObject);
         });
 });
+
+
 
 
 
