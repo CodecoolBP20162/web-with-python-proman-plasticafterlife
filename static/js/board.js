@@ -41,3 +41,19 @@ saveLocal(One);
 
 saveLocal(boardTwo);
 readLocal(boardTwo);
+
+$(document).ready(
+    function listBoards() {
+        for (var key in localStorage) {
+            var board = readLocal(key);
+            for (i in board) {
+                $("#board").append("<div id='xy'>" + board[i] + "</div>");
+            };
+        };
+    });
+
+
+
+
+function createBoard() { }
+

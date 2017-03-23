@@ -2,7 +2,7 @@
 // status constructor
 function Status(statusTitle) {
     this.statusTitle = statusTitle;
-    this.cardList = [3, 5];
+    this.cardList = new Card();
 };
 
 //status example
