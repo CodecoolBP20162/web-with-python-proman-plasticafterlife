@@ -18,8 +18,8 @@ def boards():
     return render_template('boards.html')
 
 
-@app.route('/cards', methods=['GET', 'POST'])
-def cards():
+@app.route('/cards/<boardId>', methods=['GET', 'POST'])
+def cards(boardId):
     return render_template('cards.html')
 
 if __name__ == '__main__':
