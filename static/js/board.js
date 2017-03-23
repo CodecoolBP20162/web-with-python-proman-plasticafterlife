@@ -137,19 +137,17 @@ function saveLocal(boardObject) {
 // readLocal(boardTwo);
 
 
-
-function Redirect(boardId) {
-
-    window.location.pathname = boardId;
-}
-
 $(document).ready(
     function listBoards() {
         for (var key in localStorage) {
             var board = readLocal(key);
-            var boardId = board.boardId;
             $("#board").append("<div id='boardTitle'>" + board.boardTitle + "</div>");
-            $("#board").append("<form> <input type='button', value='Details' , onclick='Redirect();' /> </form>");
+            $("button").click(function () {
+                $("div").html(board.boardTitle);
+                console.log(board.length)
+            });
+
+
         };
     });
 
