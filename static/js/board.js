@@ -1,4 +1,3 @@
-
 // status constructor
 function Status(statusTitle) {
     this.statusTitle = statusTitle;
@@ -18,10 +17,10 @@ function Board(boardTitle) {
     var boardDate = new Date();
     this.boardId = boardDate.valueOf();
     this.boardTitle = boardTitle;
-    var newStatus = new Status("new");
-    var planningStatus = new Status("planning");
-    var inprogressStatus = new Status("inprogress");
-    var doneStatus = new Status("done");
+        var newStatus = new Status("new");
+        var planningStatus = new Status("planning");
+        var inprogressStatus = new Status("inprogress");
+        var doneStatus = new Status("done");
     this.statusList = [newStatus, planningStatus, inprogressStatus, doneStatus]
 }
 
@@ -31,8 +30,7 @@ console.log(boardOne.boardTitle);
 console.log(boardOne.statusList);
 console.log(boardOne.boardId);
 console.log(boardOne.statusList);
-
-var boardTwo = new Board('Second board')
+var boardTwo = new Board('Second board');
 
 
 function readLocal(boardID) {
@@ -43,23 +41,53 @@ function readLocal(boardID) {
 
 function saveLocal(boardObject) {
     var boardJS = JSON.stringify(boardObject);
-    var ID = boardObject.boardId
+    var ID = boardObject.boardId;
     localStorage.setItem(ID, boardJS);
 }
 
+var listStatus = function (rawBoardId) {
+    var statusList = []
+    var boardId = rawBoardId.slice(8);
+
+    boardObject = readLocal(boardId);
+    for (var status in boardObject.statusList) {
+        statusList.push(status)
+        console.log(status)
+    };
+    //console.log(statusList);
+}
+        // for (var i = 0; i < statusObject.cardList.length; i++) {
+        //     console.log(statusObject.cardList[i]);
+        //     insertToBody(statusObject, statusObject.cardList[i])
+        // };
+
 $(document).ready(function () {
+
     function listBoards() {
         for (var key in localStorage) {
             var board = readLocal(key);
-            $("#board").append("<div id='boardTitle'>" + board.boardTitle + "</div>");
+
+            $("#board").append("<div id='boardTitle'>" + board.boardTitle +
+                "<button id='details_" + board.boardId + "' onclick='listStatus(this.id)'>Details</button>" +
+                "</div>");
+
             $("#card_details").click(function () {
-                $("div").html(board.statusList);
+                window.location.replace('http://127.0.0.1:5000/cards');
+                // $("div").html(board.statusList);
                 console.log(board.length)
             });
-
-
         };
     };
+
+    listBoards();
+
+    // var listCards = function (statusObject) {
+    //     console.log(statusObject)
+    //     for (var i = 0; i < statusObject.cardList.length; i++) {
+    //         console.log(statusObject.cardList[i]);
+    //         insertToBody(statusObject, statusObject.cardList[i])
+    //     };
+    // };
 
     var addContentToCard = function (status) {
         var chosenStatus = status.statusTitle + 'StatusTask';
