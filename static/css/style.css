@@ -1,5 +1,11 @@
 .body, .html{
     background: #424242;
+
+}
+
+.container-fluid{
+    text-align: center  ;
+
 }
 #logo_landing{
     text-align: center;
@@ -9,7 +15,7 @@
     padding-left: 165px;
     height: 17px;
 }
-#block1, #block2, #block3{
+#block1, #block2, #block3, #block4, #block5{
     display:inline-block;
     vertical-align: middle;
 }
@@ -24,12 +30,15 @@
 
 .status {
     display:inline-block;
-
+    min-height: 300px;
     height: auto;
-    width: 200px;
-    background-color: #2e6da4;
+    width: 250px;
+    background-color: #3e8e41;
 }
-
+.status_add_new{
+    position: relative;
+    vertical-align: bottom;
+}
 #edit-icon {
     color: red;
     height: 20px;
@@ -40,3 +49,58 @@
     color: red;
 }
 
+.btn-save{
+
+}
+.status_header{
+    color: #fff;
+
+}
+
+ /* Dropdown Button */
+.dropbtn {
+    background-color: #4CAF50;
+    height: 100px;
+    width: 100px;
+    margin-top: 10px;
+    margin-right: 20px;
+    border-radius: 210px;
+    color: white;
+    padding: 16px;
+    font-size: 16px;
+    border: none;
+    cursor: pointer;
+}
+
+.dropbtn:hover, .dropbtn:focus {
+    background-color: #3e8e41;
+}
+
+.dropdown {
+    float: right;
+    position: relative;
+    display: inline-block;
+
+}
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #f9f9f9;
+    min-width: 160px;
+    overflow: auto;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    right: 0;
+    z-index: 1;
+}
+
+.dropdown-content a {
+    color: black;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+}
+
+.dropdown a:hover {background-color: #f1f1f1}
+
+.show {display:block;}

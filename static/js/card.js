@@ -26,13 +26,13 @@ $(document).ready(function () {
         };
 
     var insertToBody = function (status, cardObject) {
-        var chosenStatusId = "#" + status.statusTitle + "Status";
+        var chosenStatusId = ".container_status_" + status.statusTitle;
         var $statusClass = $(chosenStatusId);
         var inputId = cardObject.cardId; // the current task id
         var cardContent = cardObject.content;
 
-        $statusClass.prepend("<p class='form-group' type='text' placeholder='Add a new task' id='"
-            + "valami" + "'>" + cardContent + "</p>");
+        $statusClass.append("<p class='form-group' type='text' placeholder='Add a new task' id='"
+            + inputId + "'>" + cardContent + "</p>");
         };
 
 
@@ -59,9 +59,23 @@ $(document).ready(function () {
 
 
 
+function dropDownMenu() {
+    document.getElementById("myDropdown").classList.toggle("show");
+}
 
 
+window.onclick = function(event) {
+  if (!event.target.matches('.dropbtn')) {
 
-
+    var dropdowns = document.getElementsByClassName("dropdown-content");
+    var i;
+    for (i = 0; i < dropdowns.length; i++) {
+      var openDropdown = dropdowns[i];
+      if (openDropdown.classList.contains('show')) {
+        openDropdown.classList.remove('show');
+      }
+    }
+  }
+}
 
 

@@ -1,53 +1,77 @@
 {% extends "index.html" %}
 
 {% block content %}
-    <div class="modal-header">
-        Status - with cards
-    </div>
+    <div class="container-fluid">
+        <div class="navbar-fixed-top">
+            <div id="logo_block"></div>
+            <div class="navbar-right">
 
-    <div style="display: inline-block;">
-        <div class="status">
-            <h4 class="modal-header"><strong>New status</strong></h4>
-                <label class="control-label"><input class="form-group" type="text" placeholder="Add a new task" id="newStatusTask">
-                    <!--<img src="/static/img/edit-icon.ico" id="edit-icon"> -->
-                </label>
+                 <div class="dropdown">
+                     <button onclick="dropDownMenu()" class="dropbtn">Boards</button>
+                 <div id="myDropdown" class="dropdown-content">
+                    <a href="#">BOARD1</a>
+                    <a href="#">BOARD2</a>
+                    <a href="#">BOARD3</a>
+                 </div>
+                </div>
 
-            <div id="newStatus">
-                <button type="button" class="btn btn-success" id="saveToNew">Save</button>
             </div>
         </div>
-
-
-        <div class="status">
-            <h4 class="modal-header"><strong>Planning status</strong></h4>
-            <label class="control-label"><input class="form-group" type="text" placeholder="Add a new task" id="planningStatusTask"></label>
-
-            <div id="planningStatus">
-                <button type="button" class="btn btn-success" id ="saveToPlanning">Save</button>
-            </div>
+        <div class="page-header">
+            <h1 id="board_id"> Board ID</h1>
         </div>
-
-
-        <div class="status">
-            <h4 class="modal-header"><strong>In progress status</strong></h4>
-            <label class="control-label"><input class="form-group" type="text" placeholder="Add a new task" id="inprogressStatusTask"></label>
-
-            <div id="inprogressStatus">
-                <button type="button" class="btn btn-success" id ="saveToInprogress">Save</button>
+        <div class="" id="card_block">
+            <div class="status" id="block1">
+                <div class="status_header">
+                    <h3><strong>New</strong></h3>
+                </div>
+                <div class="container_status_new"></div><!-- BOX FOR THE NEW STATUS ELEMENTS -->
+                <div class="Status" id="newStatus">
+                    <div class="status_add_new">
+                        <label class="control-label"><input class="form-group" type="text" placeholder="Add a new task" id="newStatusTask"></label>
+                        <button type="button" class="btn btn-save" id="saveToNew">Save</button>
+                    </div>
+                </div>
             </div>
-        </div>
+            <div class="status" id="block5">
+                <div class="status_header">
+                    <h3><strong>Planning</strong></h3>
+                </div>
+                <div class="container_status_planning"></div>
+                <div class="Status" id="Status">
+                    <div class="newStatusContent">
+                        <label class="control-label"><input class="form-group" type="text" placeholder="Add a new task" id="planningStatusTask"></label>
+                        <button type="button" class="btn btn-save" id="saveToPlanning">Save</button>
+                    </div>
+                </div>
+            </div>
 
+            <div class="status" id="block3">
+                <div class="status_header">
+                    <h3><strong>In progress</strong></h3>
+                </div>
+                <div class="container_status_inprogress"></div>
+                <div id="inprogressStatus">
+                    <label class="control-label"><input class="form-group" type="text" placeholder="Add a new task" id="inprogressStatusTask"></label>
+                    <button type="button" class="btn btn-save" id ="saveToInprogress">Save</button>
+                </div>
+            </div>
 
-        <div class="status">
-            <h4 class="modal-header"><strong>Done status</strong></h4>
-            <label class="control-label"><input class="form-group" type="text" placeholder="Add a new task" id="doneStatusTask"></label>
-
+            <div class="status" id="block4">
+                <div class="status_header">
+                    <h3><strong>Done</strong></h3>
+                </div>
+            <div class="container_status_done"></div>
             <div id="doneStatus">
-                <button type="button" class="btn btn-success" id ="saveToDone">Save</button>
+                <label class="control-label"><input class="form-group" type="text" placeholder="Add a new task" id="doneStatusTask"></label>
+                <button type="button" class="btn btn-save" id ="saveToDone">Save</button>
             </div>
         </div>
-    <p id="ASD">ASD</p>
+
+        </div>
     </div>
+
+
 
 {% endblock %}
 
