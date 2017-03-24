@@ -1,0 +1,20 @@
+{% extends "index.html" %}
+
+{% block content %}
+    <div class="text-center" id="test">
+        <a id="" data="In progress" href="#" onclick="getDataToStatus(this.getAttribute('data'));">Click to do something</a>
+        <a id="" data="Review" href="#" onclick="getDataToStatus(this.getAttribute('data'));">Click to do something</a>
+        <a id="" data="Done" href="#" onclick="getDataToStatus(this.getAttribute('data'));">Click to do something</a>
+        <a id="" data="New" href="#" onclick="getDataToStatus(this.getAttribute('data'));">Click to do something</a>
+    </div>
+    <div class="container-fluid">
+        <div id="logo_landing">
+            <div id="logo_letter_landing">
+                <img id="logo_logo" src="../static/img/logo_short.png" alt="logo_letter">
+            </div>
+            <div id="logo_block"></div>
+        </div>
+    </div>
+    <script src="../static/js/logo_anim.js"></script>
+{% endblock %}
+
