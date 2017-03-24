@@ -94,13 +94,12 @@ function getBoardObject(boardId){
 
 function clearScreen(boardId){
     var boardObject = getBoardObject(boardId);
-    $("div").html(boardObject.boardTitle);
     var cardsContent = "<div style='display: inline-block;'><div class='status'><h4 class='modal-header' id='"+ boardObject.boardId + "'>" +
-        "<strong>New status</strong></h4><label class='control-label'>" +
+        "<strong>" + boardObject.boardTitle +"</strong></h4><label class='control-label'>" +
         "<input class='form-group' type='text' placeholder='Add a new task' id='newStatusTask'></label>" +
         "<div id='newStatus'><button type='button' class='btn btn-success' id='saveToNew' " +
         "onclick='saveCard(" + boardObject.boardId + ")'>Save</button> </div></div>";
-    $(".container-fluid").append(cardsContent);
+    $("div").html(cardsContent);
 }
 
 function saveCard(boardId) {
