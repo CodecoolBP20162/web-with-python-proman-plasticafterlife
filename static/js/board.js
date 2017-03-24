@@ -1,8 +1,8 @@
 // status constructor
-function Status(statusTitle) {
-    this.statusTitle = statusTitle;
-    this.cardList = [];
-};
+// function Status(statusTitle) {
+//     this.statusTitle = statusTitle;
+//     this.cardList = [];
+// };
 
 // Card constructor
 function Card() {
@@ -20,14 +20,16 @@ function Board(boardTitle) {
         var planningStatus = new Status("planning");
         var inprogressStatus = new Status("inprogress");
         var doneStatus = new Status("done");
-    this.statusList = [newStatus, planningStatus, inprogressStatus, doneStatus]
+    this.cards = [];
+        // this.statusList = [newStatus, planningStatus, inprogressStatus, doneStatus]
+
 }
 
 // Include the common functions
 function Controller(){
     this.addNewBoards  = function (boardTitle) {
         var newBoard = new Board(boardTitle);
-        return newBoard;};
+        return newBoard};
 
     this.checkLocalStorage = function (){
         var boards = [];
@@ -46,12 +48,14 @@ function Controller(){
 
     this.insertNewBoard = function (boardObject) {
         $('#addNewBoards').after("<div><p id='" + boardObject.boardId + "'>" +
-            boardObject.boardTitle + "</p></div>");};
+            boardObject.boardTitle + "</p><button id='details_"+ boardObject.boardId + "' onclick='alert(this.id)'>Details" +
+            "</button></div>");};
 
     this.listBoards = function (boardsList){
         for (var i = 0; i < boardsList.length; i++) {
             var board = boardsList[i];
             this.insertNewBoard(board);}};
+
 }
 
 // Call the functions
