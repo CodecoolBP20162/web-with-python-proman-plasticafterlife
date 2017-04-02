@@ -2,12 +2,39 @@
 
 {% block content %}
 
-<div id="board">
-    <h4 class="modal-header"><strong>Your boards</strong></h4>
-    <label class="control-label"><input class="form-group" type="text" placeholder="Add a new task" id="newBoard"></label>
+    <h1 class="modal-header"> Welcome </h1>
 
-    <button id="addNewBoards">Add a new Boards</button>
+    <div class="modal-body">
+        <div class="boards">
+            <h4 class="modal-header"><strong>Your boards</strong></h4>
+            <label class="control-label"><input class="form-group" type="text" placeholder="Add a new task" id="newBoard"></label>
 
-</div>
+            <button class="btn btn-primary" id="addNewBoards">Add a new Boards</button>
+
+            <div id="boards">
+                <!-- inserted here -->
+            </div>
+        </div>
+
+
+        <div class="cards" id="card_block">
+            <div class="status" id="block1">
+                <div class="status_header">
+                    <h3><strong>New</strong></h3>
+                </div>
+                <div class="container_status_new"></div> <!-- BOX FOR THE NEW STATUS ELEMENTS -->
+                <div class="Status" id="newStatus">
+                    <div class="status_add_new">
+                        <label class="control-label"><input class="form-group" type="text" placeholder="Add a new task" id="newStatusTask"></label>
+                        <button type="button" class="btn btn-save" id="saveToNew">Save</button>
+
+                        <div id="new-elements">
+                            <!-- inserted elements -->
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+    </div>
 
 {% endblock %}

@@ -5,31 +5,37 @@
 // };
 
 // Card constructor
-function Card() {
+function Card(content) {
     this.cardDate = new Date();
     this.cardId = this.cardDate.valueOf();
     this.content = "";
-};
+    this.status = "new";
+}
 
 // Board constructor
 function Board(boardTitle) {
     var boardDate = new Date();
     this.boardId = boardDate.valueOf();
     this.boardTitle = boardTitle;
-        // var newStatus = new Status("new");
-        // var planningStatus = new Status("planning");
-        // var inprogressStatus = new Status("inprogress");
-        // var doneStatus = new Status("done");
     this.cardList = [];
-        // this.statusList = [newStatus, planningStatus, inprogressStatus, doneStatus]
-
 }
+
+
+// minden boardnak legyen egy global változoja
+// $.addNewBoards();
+// $.dasd(function () {});
+// $('<div>').append('ezt appendeli');
+//
+// $('<div>').attr('class', 'aasd');
+// $('<div>').attr('id', '123');
+
 
 // Include the common functions
 function Controller(){
     this.addNewBoards  = function (boardTitle) {
         var newBoard = new Board(boardTitle);
-        return newBoard};
+        return newBoard
+    };
 
     this.checkLocalStorage = function (){
         var boards = [];
@@ -39,50 +45,80 @@ function Controller(){
                 boards.push(element);
                 }
             }
-            return boards;};
+            return boards;
+    };
+
+    // NEW!!
+    this.saveCardToLocal = function (board, card) {
+        board.cardList.push(card);
+        this.saveToLocal(board);
+    };
 
     this.saveToLocal = function (boardObject) {
         var boardJS = JSON.stringify(boardObject);
         var ID = boardObject.boardId;
-        localStorage.setItem(ID, boardJS);};
+        localStorage.setItem(ID, boardJS);
+    };
 
-    this.insertNewBoard = function (boardObject) {
-        $('#addNewBoards').after("<div><p id='" + boardObject.boardId + "'>" +
-            boardObject.boardTitle + "</p><button id='details_"+ boardObject.boardId + "' onclick='clearScreen(" + boardObject.boardId
-            + " )'>Details" +
-            "</button></div>");};
+    this.insertNewBoard = function (boardObject) {  // overwrite it
+        var newBoardParagraph = $('<p>').attr('id', boardObject.boardId).text(boardObject.boardTitle);
+        var boardButton = $('<button>').attr('data-boardId', boardObject.boardId).attr('class', 'btn btn-default').
+        text('Details');
+        var newDiv = $('<div>').append(newBoardParagraph, boardButton);
+        $('#boards').append(newDiv);
+    };
 
     this.listBoards = function (boardsList){
         for (var i = 0; i < boardsList.length; i++) {
             var board = boardsList[i];
-            this.insertNewBoard(board);}};
+            this.insertNewBoard(board);
+        }
+    };
 
+    this.getBoardById = function (boardsArray, boardId) {
+        for (i = 0; i < boardsArray.length; i++) {
+            if (boardsArray[i].boardId == boardId) {
+                return boardsArray[i];
+            }
+        }
+    };
+
+    // NEW!!
+    this.insertCards = function (card) {
+        var newDiv = $('<div>').append($('<p>').text(card.content));
+        $('#new-elements').append(newDiv);
+    };
+
+    // NEW!!
+    this.listCards = function(boardObject){
+        for (i = 0; i < boardObject.cardList.length; i++){
+            this.insertCards(boardObject.cardList[i]);
+        }
+    };
 
     this.readLocal = function (boardID) {
         var ID = boardID;
         var retrieve = JSON.parse(localStorage.getItem(ID));
-        console.log(retrieve);
-        return retrieve;}
+        return retrieve;
+    };
 
     this.saveLocal = function (boardObject) {
         var boardJS = JSON.stringify(boardObject);
         var ID = boardObject.boardId;
-        localStorage.setItem(ID, boardJS);}
+        localStorage.setItem(ID, boardJS);
+    };
 
-    this.addContentToCard = function (boardObject) {
-        var userInput = document.getElementById('newStatusTask');           // select the input field element
+    this.addContentToCard = function () {
         var cardObj = new Card();                                       // create a card object
-        boardObject.cardList.push(cardObj);
-        cardObj.content += userInput.value;
+        var cardContent = $('#newStatusTask').val();
+        cardObj.content = cardContent;
         return cardObj
-        };
+    };
 
-    this.insertToBody = function (boardObject, cardObject) {
-        var $statusClass = $("#saveToNew");
-
-        $statusClass.after("<div><p class='form-group' type='text' style='text-align: center' placeholder='Add a new task' id='"
-            + cardObject.cardId + "'>" + cardObject.content + "</p><div>")
-        };
+    this.insertToBody = function (cardObject) {
+        var card = $('<p>').attr('data-cardid', cardObject.cardId).text(cardObject.content);
+        $('#new-elements').append($('<div>').append(card));
+    };
 }
 
 var cont = new Controller(); // instance
@@ -92,6 +128,8 @@ function getBoardObject(boardId){
     return currentObject
 }
 
+
+// anonym function like this:
 function clearScreen(boardId){
     var boardObject = getBoardObject(boardId);
     var cardsContent = "<div style='display: inline-block;'><div class='status'><h4 class='modal-header' id='"+ boardObject.boardId + "'>" +
@@ -102,6 +140,7 @@ function clearScreen(boardId){
     $("div").html(cardsContent);
 }
 
+
 function saveCard(boardId) {
     var boardObject = getBoardObject(boardId);
     var cardObject = cont.addContentToCard(boardObject);
@@ -110,19 +149,45 @@ function saveCard(boardId) {
     cont.saveLocal(boardObject);
 }
 
+
 // Call the functions
 $(document).ready(function () {
-
     var controller = new Controller();
-    var boardObjects = controller.checkLocalStorage();
-    controller.listBoards(boardObjects);
+    var boardsArray = controller.checkLocalStorage();    // global boards objects
+    var currentBoardObject;  // this will be the current boardObject
+
+    controller.listBoards(boardsArray);
+
+    $('.cards').hide(); // hide by default
 
     $('#addNewBoards').click(function(){
         var inputBoardsTitle = document.getElementById('newBoard').value;
         var addedBoard = controller.addNewBoards(inputBoardsTitle);
+        boardsArray.push(addedBoard);    // add boards to the global array
+
         controller.insertNewBoard(addedBoard);
         controller.saveToLocal(addedBoard);
-        });
+    });
+
+    $("#boards").on('click', 'button', function switchToCards (){ // NEW!!
+        $('.boards').hide();
+        $('.cards').fadeIn();
+        var boardId = $(this).attr('data-boardid');
+        currentBoardObject = controller.getBoardById(boardsArray, boardId);
+        //var searchedBoard = controller.getBoardById(boardsArray, boardId);
+        controller.listCards(currentBoardObject);
+    });
+
+
+
+    $('#saveToNew').click(function(){
+        var currentCardObject = controller.addContentToCard();
+        // controller.insertToBody(currentCardObject); ehelyett kilistázhatná újra
+        controller.saveCardToLocal(currentBoardObject, currentCardObject);
+        // currentBoardObject.cardList.push(currentCardObject);
+        controller.listCards(currentBoardObject);   // ez igy mukodik, de elotte kell még egy remove!!
+    });
+
 
 });
 
@@ -130,7 +195,6 @@ $(document).ready(function () {
 function dropDownMenu() {
     document.getElementById("myDropdown").classList.toggle("show");
 }
-
 
 window.onclick = function(event) {
   if (!event.target.matches('.dropbtn')) {
@@ -145,3 +209,4 @@ window.onclick = function(event) {
     }
   }
 }
+
