@@ -3,6 +3,7 @@ function Card() {
     this.cardDate = new Date();
     this.cardId = this.cardDate.valueOf();
     this.content = "";
+    this.status = 'new';
 }
 
 // status constructor

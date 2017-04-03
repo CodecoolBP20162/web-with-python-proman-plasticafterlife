@@ -179,7 +179,6 @@ $(document).ready(function () {
     });
 
 
-
     $('#saveToNew').click(function(){
         var currentCardObject = controller.addContentToCard();
         // controller.insertToBody(currentCardObject); ehelyett kilistázhatná újra
@@ -208,5 +207,5 @@ window.onclick = function(event) {
       }
     }
   }
-}
+};
 
