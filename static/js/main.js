@@ -3,34 +3,35 @@ function Card() {
     this.cardDate = new Date();
     this.cardId = this.cardDate.valueOf();
     this.content = "";
-    this.status = "new";
+    this.status = "New";
 }
 
 // Board constructor
 function Board(boardTitle) {
     var boardDate = new Date();
+    this.state = New();
     this.boardId = boardDate.valueOf();
     this.boardTitle = boardTitle;
     this.cardList = [];
 }
 
 // Include the common functions
-function Controller(){
+function Controller() {
 
-    this.addNewBoards  = function (boardTitle) {
+    this.addNewBoards = function (boardTitle) {
         var newBoard = new Board(boardTitle);
         return newBoard
     };
 
-    this.checkLocalStorage = function (){
+    this.checkLocalStorage = function () {
         var boards = [];
         if (localStorage.length > 0) {
             for (var i = 0; i < localStorage.length; i++) {
                 var element = JSON.parse(localStorage.getItem(localStorage.key(i)));
                 boards.push(element);
-                }
             }
-            return boards;
+        }
+        return boards;
     };
 
     this.saveCardToLocal = function (board, card) {
@@ -47,12 +48,12 @@ function Controller(){
     this.insertNewBoard = function (boardObject) {  // overwrite it
         var newBoardParagraph = $('<p>').attr('id', boardObject.boardId).text(boardObject.boardTitle);
         var boardButton = $('<button>').attr('data-boardId', boardObject.boardId).attr('class', 'btn btn-default').
-        text('Details');
+            text('Details');
         var newDiv = $('<div>').append(newBoardParagraph, boardButton);
         $('#boards').append(newDiv);
     };
 
-    this.listBoards = function (boardsList){
+    this.listBoards = function (boardsList) {
         for (var i = 0; i < boardsList.length; i++) {
             var board = boardsList[i];
             this.insertNewBoard(board);
@@ -72,8 +73,8 @@ function Controller(){
         $('#new-cards').append(newDiv);
     };
 
-    this.listCards = function(boardObject){
-        for (i = 0; i < boardObject.cardList.length; i++){
+    this.listCards = function (boardObject) {
+        for (i = 0; i < boardObject.cardList.length; i++) {
             console.log(boardObject.cardList[i]);
             this.insertToBody(boardObject.cardList[i]);
         }
@@ -97,12 +98,12 @@ $(document).ready(function () {
     var boardsArray = controller.checkLocalStorage();    // global boards objects
     var currentBoardObject;  // this will be the current boardObject
 
-    var getBoards = function (){    // call automatically
+    var getBoards = function () {    // call automatically
         $('.cards').hide(); // hide by default
         controller.listBoards(boardsArray);
-    }();
+    } ();
 
-    $('#addNewBoards').click(function insertNewBoards (){   // save it too
+    $('#addNewBoards').click(function insertNewBoards() {   // save it too
         var inputBoardsTitle = document.getElementById('newBoard').value;
         var addedBoard = controller.addNewBoards(inputBoardsTitle);
         boardsArray.push(addedBoard);    // add boards to the global array
@@ -111,7 +112,7 @@ $(document).ready(function () {
         controller.saveToLocal(addedBoard);
     });
 
-    $("#boards").on('click', 'button', function switchToCards (){
+    $("#boards").on('click', 'button', function switchToCards() {
         $('.boards').hide();
 
         $('#new-cards').empty();    // have to empty the new-cards elements
@@ -121,14 +122,14 @@ $(document).ready(function () {
         controller.listCards(currentBoardObject);
     });
 
-    $('#saveToNew').click(function insertNewCards (){    // save it too
+    $('#saveToNew').click(function insertNewCards() {    // save it too
         var currentCardObject = controller.addContentToCard();
         controller.insertToBody(currentCardObject);
         controller.saveCardToLocal(currentBoardObject, currentCardObject);
         currentBoardObject.cardList.push(currentCardObject);
     });
 
-    $('#back-to-boards').click(function switchBackBoards (){
+    $('#back-to-boards').click(function switchBackBoards() {
         $('.cards').hide();
         $('#new-cards').empty();    // have to empty the new-cards elements
         $('.boards').fadeIn();
