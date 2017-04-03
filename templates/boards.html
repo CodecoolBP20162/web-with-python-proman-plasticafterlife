@@ -1,12 +1,11 @@
 {% extends "index.html" %}
-
 {% block content %}
 
-    <h1 class="modal-header"> Welcome </h1>
-
+    <h1 class="modal-header"> To-do app </h1>
 
     <div class="modal-body">
-        <div class="boards">
+
+        <div class="boards">    <!-- boards's content -->
             <h4 class="modal-header"><strong>Your boards</strong></h4>
             <label class="control-label"><input class="form-group" type="text" placeholder="Add a new task" id="newBoard"></label>
 
@@ -18,7 +17,9 @@
         </div>
 
 
-        <div class="cards" id="card_block">
+        <div class="cards" id="card_block">     <!-- cards's content -->
+            <h4 class="modal-header"><strong>Your cards</strong></h4>
+
             <div class="status" id="block1">
                 <div class="status_header">
                     <h3><strong>New</strong></h3>
@@ -29,13 +30,17 @@
                         <label class="control-label"><input class="form-group" type="text" placeholder="Add a new task" id="newStatusTask"></label>
                         <button type="button" class="btn btn-save" id="saveToNew">Save</button>
 
-                        <div id="new-elements">
+                        <div id="new-cards">
                             <!-- inserted elements -->
                         </div>
 
                     </div>
                 </div>
             </div>
+            <div>
+                <button class="btn btn-primary" id="back-to-boards">Back to Boards</button>
+            </div>
+        </div>
     </div>
 
 {% endblock %}
