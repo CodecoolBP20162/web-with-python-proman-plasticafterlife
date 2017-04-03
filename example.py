@@ -5,12 +5,12 @@ from models.card import Card
 
 class ExampleCard:
 
-    def __init__(self, title, board):
-        self.title = title
+    def __init__(self, content, board):
+        self.content = content
         self.board = board
 
     def generate_example(self):
-        Card.create(title=self.title, board=self.board)
+        Card.create(content=self.content, board=self.board)
 
 
 class ExampleBoard:
