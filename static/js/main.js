@@ -1,5 +1,6 @@
 
 // state_pattern
+var state = new LocalStorage();
 
 // LocalStorage
 
@@ -21,14 +22,27 @@ function LocalStorage() {
         return boards;
     };
 
+    this.addCards = function (boardObjectId) {
+        var controller = new Controller();
+        var currentBoardObject = controller.getBoardObjById(boardObjectId);
+        var currentCardObject = controller.addContentToCard();
+        console.log(currentBoardObject);
+        console.log(currentCardObject);
+        controller.insertToBody(currentCardObject);
+        controller.saveCardToLocal(currentBoardObject, currentCardObject);
+        currentBoardObject.cardList.push(currentCardObject);
+    };
+
+    this.addNewBoards = function (boardTitle) {
+        var newBoard = new Board(boardTitle);
+        return newBoard
+    };
 };
 
-
 // Database
-var state = new Database();
 
 function Database() {
-    this.readBoard = function(){
+    this.readBoard = function () {
         var boardList = [];
         $.ajax({
             url: '/get-boards',
@@ -36,40 +50,37 @@ function Database() {
             dataType: 'json',
             async: false,
             success: function (data) {
-                for (var prop in data){
-                    for (var board in data[prop]){
+                for (var prop in data) {
+                    for (var board in data[prop]) {
                         boardList.push(data[prop][board]);
                     }
                 }
-                console.log(boardList)
             },
-            error: function () {alert('error')}
+            error: function () { alert('error') }
         });
         return boardList
     };
 
-    this.readCard = function(boardId){
+    this.readCard = function (boardId) {
         var cardList = [];
-        console.log(boardId);
         $.ajax({
             url: '/get-cards/' + boardId,
             type: 'GET',
             dataType: 'json',
             async: false,
-            success: function(data){
-                for (var prop in data){
-                    for (var card in data[prop]){
+            success: function (data) {
+                for (var prop in data) {
+                    for (var card in data[prop]) {
                         cardList.push(data[prop][card]);
                     }
                 }
-                console.log(cardList);
             },
-            error: function(data){alert('error' + data)}
+            error: function (data) { alert('error' + data) }
         });
         return cardList;
     }
 
-    this.addCards = function(boardId){
+    this.addCards = function (boardId) {
         $.ajax({
             url: '/post-cards',
             type: 'POST',
@@ -79,10 +90,27 @@ function Database() {
                 status: 'New',
                 board_id: boardId
             },
-            success: function(data){
+            success: function (data) {
                 alert('Yee' + data.status)
             },
-            error: function(data){
+            error: function (data) {
+                alert('error' + data.status)
+            }
+        })
+    }
+
+    this.addNewBoards = function (inputBoardsTitle) {
+        $.ajax({
+            url: '/post-boards',
+            type: 'POST',
+            dataType: 'json',
+            data: {
+                title: inputBoardsTitle
+            },
+            success: function (data) {
+                alert('Yee' + data.status)
+            },
+            error: function (data) {
                 alert('error' + data.status)
             }
         })
@@ -90,140 +118,163 @@ function Database() {
 
 }
 
-    // Card constructor
-    function Card() {
-        this.cardDate = new Date();
-        this.cardId = this.cardDate.valueOf();
-        this.content = "";
-        this.status = "New";
-    }
+// Card constructor
+function Card() {
+    this.cardDate = new Date();
+    this.cardId = this.cardDate.valueOf();
+    this.content = "";
+    this.status = "New";
+}
 
-    // Board constructor
-    function Board(boardTitle) {
-        var boardDate = new Date();
-        this.state = state;
-        this.id = boardDate.valueOf();
-        this.title = boardTitle;
-        this.cardList = [];
-    }
+// Board constructor
+function Board(boardTitle) {
+    var boardDate = new Date();
+    this.state = state;
+    this.id = boardDate.valueOf();
+    this.title = boardTitle;
+    this.cardList = [];
+}
 
-    // Include the common functions
-    function Controller() {
+// Include the common functions
+function Controller() {
 
-        this.addNewBoards = function (boardTitle) {
-            var newBoard = new Board(boardTitle);
-            return newBoard
-        };
+    // this.addNewBoards = function (boardTitle) {
+    //     var newBoard = new Board(boardTitle);
+    //     return newBoard
+    // };
 
-        this.saveCardToLocal = function (board, card) {
-            board.cardList.push(card);
-            state.saveData(board);
-        };
+    this.saveCardToLocal = function (board, card) {
+        board.cardList.push(card);
+        state.saveData(board);
+    };
 
-        this.insertNewBoard = function (boardObject) {  // overwrite it
+    this.getBoardObjById = function (boardObjectId) {
+        var boards = state.readBoard();
+        var currentBoardObject = "";
+        for (var board in boards) {
+            if (boards[board].id === boardObjectId) {
+                currentBoardObject = boards[board]
+            }
+        }
+        return currentBoardObject;
+    };
+    this.insertNewBoard = function (boardObject) {
+        console.log(boardObject.id);
+
+        // var cardList = state.readCard(boardObject.id);
+        // this.listCards(cardList);
+        // overwrite it
+        if (state instanceof LocalStorage) {
+            this.listCards(currentBoardObject.cardList)
             var newBoardParagraph = $('<p>').attr('id', boardObject.id).text(boardObject.title);
             var boardButton = $('<button>').attr('data-boardId', boardObject.id).attr('class', 'btn btn-default').
                 text('Details');
             var newDiv = $('<div>').append(newBoardParagraph, boardButton);
             $('#boards').append(newDiv);
-        };
+        }
+        else {
+            var newBoardParagraph = $('<p>').text(boardObject.title);
+            var boardButton = $('<button>').attr('class', 'btn btn-default').
+                text('Details');
+            var newDiv = $('<div>').append(newBoardParagraph, boardButton);
+            $('#boards').append(newDiv);
+        }
 
-        this.listBoards = function (boardsList) {
-            for (var i = 0; i < boardsList.length; i++) {
-                var board = boardsList[i];
-                this.insertNewBoard(board);
+
+    };
+
+    this.listBoards = function (boardsList) {
+        for (var i = 0; i < boardsList.length; i++) {
+            var board = boardsList[i];
+            this.insertNewBoard(board);
+        }
+    };
+
+    this.getBoardById = function (boardsArray, boardId) {
+        for (i = 0; i < boardsArray.length; i++) {
+            if (boardsArray[i].id == boardId) {
+                return boardsArray[i];
             }
-        };
+        }
+    };
 
-        this.getBoardById = function (boardsArray, boardId) {
-            for (i = 0; i < boardsArray.length; i++) {
-                if (boardsArray[i].id == boardId) {
-                    return boardsArray[i];
-                }
-            }
-        };
+    this.insertCards = function (cardObject) {
+        var newDiv = $('<div>').append($('<p>').text(cardObject.content));
+        $('#new-cards').append(newDiv);
+    };
 
-        this.insertCards = function (cardObject) {
-            var newDiv = $('<div>').append($('<p>').text(cardObject.content));
-            $('#new-cards').append(newDiv);
-        };
+    this.listCards = function (cardList) {
+        for (i = 0; i < cardList.length; i++) {
+            this.insertToBody(cardList[i]);
+        }
+    };
 
-        // this.listCards = function (boardObject) {
-        //     for (i = 0; i < boardObject.cardList.length; i++) {
-        //         console.log(boardObject.cardList[i]);
-        //         this.insertToBody(boardObject.cardList[i]);
-        //     }
-        // };
+    this.addContentToCard = function () {
+        var cardObj = new Card();                                       // create a card object
+        cardObj.content = $('#newStatusTask').val();
+        return cardObj
+    };
 
-        this.listCards = function (cardList) {
-            for (i = 0; i < cardList.length; i++) {
-                console.log(cardList[i]);
-                this.insertToBody(cardList[i]);
-            }
-        };
+    this.insertToBody = function (cardObject) {
+        var card = $('<p>').attr('data-cardid', cardObject.cardId).text(cardObject.content);
+        $('#new-cards').append($('<div>').append(card));
+    };
 
-        this.addContentToCard = function () {
-            var cardObj = new Card();                                       // create a card object
-            cardObj.content = $('#newStatusTask').val();
-            return cardObj
-        };
+}
 
-        this.insertToBody = function (cardObject) {
-            var card = $('<p>').attr('data-cardid', cardObject.cardId).text(cardObject.content);
-            $('#new-cards').append($('<div>').append(card));
-        };
+$(document).ready(function () {
+    var controller = new Controller();
+    var boardsArray = state.readBoard();    // global boards objects
+    var currentBoardObject;  // this will be the current boardObject
 
-    }
-
-    $(document).ready(function () {
-        var controller = new Controller();
-        var boardsArray = state.readBoard();    // global boards objects
-        var currentBoardObject;  // this will be the current boardObject
-
-        var getBoards = function () {    // call automatically
-            $('.cards').hide(); // hide by default
-            controller.listBoards(boardsArray);
-            console.log(boardsArray)
-        }();
+    var getBoards = function () {    // call automatically
+        $('.cards').hide(); // hide by default
+        controller.listBoards(boardsArray);
+    }();
 
 
-        $('#addNewBoards').click(function insertNewBoards() {   // save it too
-            var inputBoardsTitle = document.getElementById('newBoard').value;
-            var addedBoard = controller.addNewBoards(inputBoardsTitle);
-            boardsArray.push(addedBoard);    // add boards to the global array
+    $('#addNewBoards').click(function insertNewBoards() {   // save it too
+        var inputBoardsTitle = document.getElementById('newBoard').value;
+        var addedBoard = state.addNewBoards(inputBoardsTitle);
+        //boardsArray.push(addedBoard);
+        console.log(boardsArray);
+        // add boards to the global array
+        var boardList = state.readBoard();
+        console.log(boardList.length)
+        $("#boards").empty();
+        for (i = 0; i < boardList.length; i++) {
+            controller.insertNewBoard(boardList[i]);
+        }
 
-            controller.insertNewBoard(addedBoard);
-            addedBoard.state.saveData(addedBoard);
-        });
+        // state.saveData(addedBoard);
 
-        $("#boards").on('click', 'button', function switchToCards() {
-            $('.boards').hide();
-
-            $('#new-cards').empty();    // have to empty the new-cards elements
-            $('.cards').fadeIn();
-            var boardId = $(this).attr('data-boardid');
-            currentBoardObject = controller.getBoardById(boardsArray, boardId);
-
-            if (state instanceof LocalStorage){
-                controller.listCards(currentBoardObject.cardList)
-            }
-            else {
-                var cardList = state.readCard(boardId);
-                controller.listCards(cardList);
-            }
-        });
-
-        $('#saveToNew').click(function insertNewCards() {    // save it too
-            // var currentCardObject = controller.addContentToCard();
-            // controller.insertToBody(currentCardObject);
-            // controller.saveCardToLocal(currentBoardObject, currentCardObject);
-            // currentBoardObject.cardList.push(currentCardObject);
-            state.addCards(currentBoardObject.id)
-        });
-
-        $('#back-to-boards').click(function switchBackBoards() {
-            $('.cards').hide();
-            $('#new-cards').empty();    // have to empty the new-cards elements
-            $('.boards').fadeIn();
-        });
     });
+
+    $("#boards").on('click', 'button', function switchToCards() {
+        $('.boards').hide();
+        $('#new-cards').empty();    // have to empty the new-cards elements
+        $('.cards').fadeIn();
+        var boardId = $(this).attr('data-boardid');
+        currentBoardObject = controller.getBoardById(boardsArray, boardId);
+
+        if (state instanceof LocalStorage) {
+            controller.listCards(currentBoardObject.cardList)
+        }
+        else {
+            var cardList = state.readCard(boardId);
+            controller.listCards(cardList);
+        }
+    });
+
+    $('#saveToNew').click(function insertNewCards() {    // save it too
+        state.addCards(currentBoardObject.id)
+    });
+
+    $('#back-to-boards').click(function switchBackBoards() {
+        $('.cards').hide();
+        $('#new-cards').empty();    // have to empty the new-cards elements
+        $('.boards').fadeIn();
+    });
+});
+
+

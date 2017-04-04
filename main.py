@@ -17,7 +17,7 @@ def index():
     return render_template("main_page.html")
 
 
-@app.route('/boards', methods=['GET', 'POST'])
+@app.route('/boards', methods=['GET'])
 def boards():
     return render_template('boards.html')
 
@@ -49,6 +49,13 @@ def post_cards():
     card_status = request.form['status']
     board_id = request.form['board_id']
     Card.create(content=card_content, board=board_id, status=card_status)
+    return jsonify({"status": 'ok'})
+
+
+@app.route('/post-boards', methods=['POST'])
+def post_boards():
+    board_title = request.form['title']
+    Board.create(title=board_title)
     return jsonify({"status": 'ok'})
 
 
