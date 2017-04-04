@@ -6,11 +6,11 @@
 function LocalStorage() {
     this.saveData = function (boardObject) {
         var boardJS = JSON.stringify(boardObject);
-        var ID = boardObject.boardId;
+        var ID = boardObject.id;
         localStorage.setItem(ID, boardJS);
     };
 
-    this.readData = function () {
+    this.readBoard = function () {
         var boards = [];
         if (localStorage.length > 0) {
             for (var i = 0; i < localStorage.length; i++) {
@@ -25,36 +25,10 @@ function LocalStorage() {
 
 
 // Database
+var state = new Database();
 
 function Database() {
-    // this.saveData = function (boardObject) {
-    //     var id = $(this).attr('href');
-    //     $.ajax({
-    //         url: '/post',
-    //         type: 'POST',
-    //         success: function (data) {
-    //             $("")
-    //             return data;
-    //         },
-    //         error: function () {
-    //             alert('failure');
-    //         }
-    //     });
-    // };
-    // this.readData = function () {
-    //     var id = $(this).attr('href');
-    //     $.ajax({
-    //         url: '/boards',
-    //         type: 'GET',
-    //         success: function (data) {
-    //             return data;
-    //         },
-    //         error: function () {
-    //             alert('failure');
-    //         }
-    //     });
-    // };
-    this.readData = function(){
+    this.readBoard = function(){
         var boardList = [];
         $.ajax({
             url: '/get-boards',
@@ -62,7 +36,6 @@ function Database() {
             dataType: 'json',
             async: false,
             success: function (data) {
-                alert(data);
                 for (var prop in data){
                     for (var board in data[prop]){
                         boardList.push(data[prop][board]);
@@ -71,43 +44,50 @@ function Database() {
                 console.log(boardList)
             },
             error: function () {alert('error')}
-        })
+        });
         return boardList
     };
 
-        // $.when(this.getBoards()).then(function(){
-        //     console.log('success');
-        //     for (var prop in data){
-        //         for (var board in data[prop]){
-        //             boardList.push(data[prop][board]);
-        //         }
-        //     }
-        //     console.log(boardList);
-        //     return boardList
-        // });
+    this.readCard = function(boardId){
+        var cardList = [];
+        console.log(boardId);
+        $.ajax({
+            url: '/get-cards/' + boardId,
+            type: 'GET',
+            dataType: 'json',
+            async: false,
+            success: function(data){
+                for (var prop in data){
+                    for (var card in data[prop]){
+                        cardList.push(data[prop][card]);
+                    }
+                }
+                console.log(cardList);
+            },
+            error: function(data){alert('error' + data)}
+        });
+        return cardList;
+    }
 
-        // $.when(this.getBoards()).then(function(data){   // change this
-        //     console.log('success');
-        //     for (var prop in data){
-        //         for (var board in data[prop]){
-        //             boardList.push(data[prop][board]);
-        //         }
-        //     }
-        //     console.log(boardList);
-        //     return boardList
-        // });
+    this.addCards = function(boardId){
+        $.ajax({
+            url: '/post-cards',
+            type: 'POST',
+            dataType: 'json',
+            data: {
+                content: $('#newStatusTask').val(),
+                status: 'New',
+                board_id: boardId
+            },
+            success: function(data){
+                alert('Yee' + data.status)
+            },
+            error: function(data){
+                alert('error' + data.status)
+            }
+        })
+    }
 
-
-    // this.getBoards = function (){
-    //     $.ajax({
-    //         url: '/get-boards',
-    //         type: 'GET',
-    //         dataType: 'json',
-    //         async: false,
-    //         success: function () {alert('Success')},
-    //         error: function () {alert('error')}
-    //     })
-    // };
 }
 
     // Card constructor
@@ -121,7 +101,7 @@ function Database() {
     // Board constructor
     function Board(boardTitle) {
         var boardDate = new Date();
-        this.state = new Database();
+        this.state = state;
         this.id = boardDate.valueOf();
         this.title = boardTitle;
         this.cardList = [];
@@ -137,9 +117,8 @@ function Database() {
 
         this.saveCardToLocal = function (board, card) {
             board.cardList.push(card);
-            this.state.saveData(board);
+            state.saveData(board);
         };
-
 
         this.insertNewBoard = function (boardObject) {  // overwrite it
             var newBoardParagraph = $('<p>').attr('id', boardObject.id).text(boardObject.title);
@@ -158,7 +137,7 @@ function Database() {
 
         this.getBoardById = function (boardsArray, boardId) {
             for (i = 0; i < boardsArray.length; i++) {
-                if (boardsArray[i].boardId == boardId) {
+                if (boardsArray[i].id == boardId) {
                     return boardsArray[i];
                 }
             }
@@ -169,10 +148,17 @@ function Database() {
             $('#new-cards').append(newDiv);
         };
 
-        this.listCards = function (boardObject) {
-            for (i = 0; i < boardObject.cardList.length; i++) {
-                console.log(boardObject.cardList[i]);
-                this.insertToBody(boardObject.cardList[i]);
+        // this.listCards = function (boardObject) {
+        //     for (i = 0; i < boardObject.cardList.length; i++) {
+        //         console.log(boardObject.cardList[i]);
+        //         this.insertToBody(boardObject.cardList[i]);
+        //     }
+        // };
+
+        this.listCards = function (cardList) {
+            for (i = 0; i < cardList.length; i++) {
+                console.log(cardList[i]);
+                this.insertToBody(cardList[i]);
             }
         };
 
@@ -191,8 +177,7 @@ function Database() {
 
     $(document).ready(function () {
         var controller = new Controller();
-        var state = new Database();
-        var boardsArray = state.readData();    // global boards objects
+        var boardsArray = state.readBoard();    // global boards objects
         var currentBoardObject;  // this will be the current boardObject
 
         var getBoards = function () {    // call automatically
@@ -218,14 +203,22 @@ function Database() {
             $('.cards').fadeIn();
             var boardId = $(this).attr('data-boardid');
             currentBoardObject = controller.getBoardById(boardsArray, boardId);
-            controller.listCards(currentBoardObject);
+
+            if (state instanceof LocalStorage){
+                controller.listCards(currentBoardObject.cardList)
+            }
+            else {
+                var cardList = state.readCard(boardId);
+                controller.listCards(cardList);
+            }
         });
 
         $('#saveToNew').click(function insertNewCards() {    // save it too
-            var currentCardObject = controller.addContentToCard();
-            controller.insertToBody(currentCardObject);
-            controller.saveCardToLocal(currentBoardObject, currentCardObject);
-            currentBoardObject.cardList.push(currentCardObject);
+            // var currentCardObject = controller.addContentToCard();
+            // controller.insertToBody(currentCardObject);
+            // controller.saveCardToLocal(currentBoardObject, currentCardObject);
+            // currentBoardObject.cardList.push(currentCardObject);
+            state.addCards(currentBoardObject.id)
         });
 
         $('#back-to-boards').click(function switchBackBoards() {

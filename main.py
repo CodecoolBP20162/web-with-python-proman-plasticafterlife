@@ -32,9 +32,24 @@ def get_boards():
     return jsonify({'boards': boards_dict})
 
 
-@app.route('/get-cards/<cardid>')
-def get_cards(cardid):
-    print(cardid)
+@app.route('/get-cards/<boardid>')
+def get_cards(boardid):
+    cards = Card.select().where(Card.board == boardid)
+    cards_dict = {}
+    for card in cards:
+        cards_dict[str(card.id)] = {'id': card.id, 'content': card.content, 'status': card.status}
+
+    return jsonify({'cards': cards_dict})
+
+
+@app.route('/post-cards', methods=['POST'])
+def post_cards():
+    # card_id = request.form['id']
+    card_content = request.form['content']
+    card_status = request.form['status']
+    board_id = request.form['board_id']
+    Card.create(content=card_content, board=board_id, status=card_status)
+    return jsonify({"status": 'ok'})
 
 
 @app.route('/cards', methods=['GET', 'POST'])
