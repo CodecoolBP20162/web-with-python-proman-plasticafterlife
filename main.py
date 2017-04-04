@@ -32,6 +32,10 @@ def get_boards():
     return jsonify({'boards': boards_dict})
 
 
+@app.route('/get-cards/<cardid>')
+def get_cards(cardid):
+    print(cardid)
+
 
 @app.route('/cards', methods=['GET', 'POST'])
 def cards():
