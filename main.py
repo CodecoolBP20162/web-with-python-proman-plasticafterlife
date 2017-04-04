@@ -27,7 +27,9 @@ def get_boards():
     boards = Board.select()
     boards_dict = {}
     for board in boards:
-        boards_dict[str(board.id)] = {'title': board.title, 'id': board.id}
+        boards_dict[str(board.id)] = {
+            'title': board.title,
+            'id': board.id}
 
     return jsonify({'boards': boards_dict})
 
@@ -35,11 +37,14 @@ def get_boards():
 @app.route('/get-cards/<boardid>')
 def get_cards(boardid):
     cards = Card.select().where(Card.board == boardid)
-    cards_dict = {}
+    cards_dict = []
     for card in cards:
-        cards_dict[str(card.id)] = {'id': card.id, 'content': card.content, 'status': card.status}
+        cards_dict.append({
+            'id': card.id,
+            'content': card.content,
+            'status': card.status})
 
-    return jsonify({'cards': cards_dict})
+    return jsonify(cards_dict)
 
 
 @app.route('/post-cards', methods=['POST'])
