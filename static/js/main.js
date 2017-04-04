@@ -27,33 +27,70 @@ function LocalStorage() {
 // Database
 
 function Database() {
-    this.saveData = function (boardObject) {
-        var id = $(this).attr('href');
-        $.ajax({
-            url: '/post',
-            type: 'POST',
-            success: function (data) {
-                $("")
-                return data;
-            },
-            error: function () {
-                alert('failure');
+    // this.saveData = function (boardObject) {
+    //     var id = $(this).attr('href');
+    //     $.ajax({
+    //         url: '/post',
+    //         type: 'POST',
+    //         success: function (data) {
+    //             $("")
+    //             return data;
+    //         },
+    //         error: function () {
+    //             alert('failure');
+    //         }
+    //     });
+    // };
+    // this.readData = function () {
+    //     var id = $(this).attr('href');
+    //     $.ajax({
+    //         url: '/boards',
+    //         type: 'GET',
+    //         success: function (data) {
+    //             return data;
+    //         },
+    //         error: function () {
+    //             alert('failure');
+    //         }
+    //     });
+    // };
+    this.readData = function(){
+        var getBoards = this.getBoards();
+        var boardList = [];
+
+        getBoards.done(function(data){
+            console.log('success');
+            for (var prop in data){
+                for (var board in data[prop]){
+                    boardList.push(data[prop][board]);
+                }
             }
+            console.log(boardList);
+            return boardList
         });
+        // $.when(this.getBoards()).then(function(data){   // change this
+        //     console.log('success');
+        //     for (var prop in data){
+        //         for (var board in data[prop]){
+        //             boardList.push(data[prop][board]);
+        //         }
+        //     }
+        //     console.log(boardList);
+        //     return boardList
+        // });
     };
-    this.readData = function () {
-        var id = $(this).attr('href');
-        $.ajax({
-            url: '/boards',
+
+
+    this.getBoards = function (){
+        return $.ajax({
+            url: '/get-boards',
             type: 'GET',
-            success: function (data) {
-                return data;
-            },
-            error: function () {
-                alert('failure');
-            }
-        });
-    }
+            dataType: 'json',
+            success: function () {alert('Success')},
+            error: function () {alert('error')}
+        })
+    };
+}
 
 
 
@@ -68,7 +105,7 @@ function Database() {
     // Board constructor
     function Board(boardTitle) {
         var boardDate = new Date();
-        this.state = new LocalStorage();
+        this.state = new Database();
         this.boardId = boardDate.valueOf();
         this.boardTitle = boardTitle;
         this.cardList = [];
@@ -138,14 +175,24 @@ function Database() {
 
     $(document).ready(function () {
         var controller = new Controller();
-        var state = new LocalStorage();
-        var boardsArray = state.readData();    // global boards objects
+        var state = new Database();
+        // var boardsArray = state.readData();    // global boards objects
+        var boardsArray;
+        $.when(state.readData()).then(function(data){
+            boardsArray = data;
+            console.log(data)
+        });
+
+         // global boards objects
+
         var currentBoardObject;  // this will be the current boardObject
 
         var getBoards = function () {    // call automatically
             $('.cards').hide(); // hide by default
             controller.listBoards(boardsArray);
         }();
+
+
 
         $('#addNewBoards').click(function insertNewBoards() {   // save it too
             var inputBoardsTitle = document.getElementById('newBoard').value;
@@ -178,5 +225,4 @@ function Database() {
             $('#new-cards').empty();    // have to empty the new-cards elements
             $('.boards').fadeIn();
         });
-
     });

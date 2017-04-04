@@ -1,6 +1,8 @@
 from build import rebuild_database
 from example import main
 from flask import *
+from models.board import Board
+from models.card import Card
 
 app = Flask(__name__)
 app.config.from_object(__name__)
@@ -18,6 +20,17 @@ def index():
 @app.route('/boards', methods=['GET', 'POST'])
 def boards():
     return render_template('boards.html')
+
+
+@app.route('/get-boards')
+def get_boards():
+    boards = Board.select()
+    boards_dict = {}
+    for board in boards:
+        boards_dict[str(board.id)] = {'title': board.title, 'id': board.id}
+
+    return jsonify({'boards': boards_dict})
+
 
 
 @app.route('/cards', methods=['GET', 'POST'])
