@@ -1,4 +1,4 @@
-"use strict"
+
 // state_pattern
 var state = new Database();
 
@@ -14,6 +14,15 @@ function LocalStorage() {
             }
         }
         return boards;
+    };
+
+    this.readCard = function (boardId) {
+        let boards = this.readBoard();
+        for (let i = 0; i < boards.length; i++) {
+            if (boards[i].id === parseInt(boardId)) {
+                return boards[i].cardList;
+            }
+        }
     };
 
     this.addCards = function (boardObjectId, successCallback) {
@@ -34,14 +43,7 @@ function LocalStorage() {
         successCallback();
     };
 
-    this.readCard = function (boardId) {
-        let boards = this.readBoard();
-        for (let i = 0; i < boards.length; i++) {
-            if (boards[i].id === parseInt(boardId)) {
-                return boards[i].cardList;
-            }
-        }
-    };
+
 };
 
 // Database
@@ -189,7 +191,7 @@ function Controller() {
     this.addContentToCard = function () {
         var cardObj = new Card();                                       // create a card object
         cardObj.content = $('#newStatusTask').val();
-        return cardObj
+        return cardObj;
     };
 
     this.insertToBody = function (cardObject) {
@@ -218,6 +220,7 @@ $(document).ready(function () {
             for (let i = 0; i < boardsArray.length; i++) {
                 controller.insertNewBoard(boardsArray[i]);
             }
+            $('#newBoard').val('');
         });
     });
 
@@ -235,7 +238,8 @@ $(document).ready(function () {
         state.addCards(currentBoardObject.id, function () {
             var cardList = state.readCard(currentBoardObject.id);
             controller.listCards(cardList);
-        })
+            $('#newStatusTask').val('');
+        });
     });
 
     $('#back-to-boards').click(function switchBackBoards() {
