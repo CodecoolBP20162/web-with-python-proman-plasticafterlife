@@ -64,32 +64,11 @@ section {
 }
 
 
-.status {
-    display:inline-block;
-    min-height: 300px;
-    height: auto;
-    width: 250px;
-    background-color: #3e8e41;
-}
-.status_add_new{
-    position: relative;
-    vertical-align: bottom;
-}
-#edit-icon {
-    color: red;
-    height: 20px;
-    width: 20px;
-}
-
-.bin-icon:hover {
-    color: red;
-}
-
-.btn-save{
-
-}
-.status_header{
-    color: #fff;
+#boardBox {
+    display: inline-table;
+    padding: 50px 50px 50px 50px;
+    background-color: #3c3c3c;
+    margin: 2% 20% 2% 20%;
 
 }
 

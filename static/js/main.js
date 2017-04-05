@@ -156,7 +156,7 @@ function Controller() {
         var newBoardParagraph = $('<p>').attr('id', boardObject.id).text(boardObject.title);
         var boardButton = $('<button>').attr('data-boardId', boardObject.id).attr('class', 'btn btn-default').
             text('Details');
-        var newDiv = $('<div>').append(newBoardParagraph, boardButton);
+        var newDiv = $('<div>').attr('id', 'boardBox').append(newBoardParagraph, boardButton);
         $('#boards').append(newDiv);
     };
 
