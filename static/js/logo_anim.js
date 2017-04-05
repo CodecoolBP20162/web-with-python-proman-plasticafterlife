@@ -1,4 +1,11 @@
-var str = "<div id='block1'> <img src='../static/img/left_part.png' alt='logo_left'> </div> <div id='block2'> <p>plastic_afterlife</p></div> <div id='block3'> <img src='../static/img/right_part.png' alt='logo_right'> </div>",
+$("#scroll").delay( 3000 ).fadeIn( 400 );
+$("#logo_container").delay( 6000 ).fadeOut( 400 );
+$("#fadein").delay( 7000 ).fadeIn( 400 );
+
+var str =
+        "<div id='block1'><img id = 'logo' src='../static/img/left_part.png' alt='logo_left'></div>" +
+        "<div id='block2'><p>plastic_afterlife</p></div>" +
+        "<div id='block3'><img id = 'logo' src='../static/img/right_part.png' alt='logo_right'> </div>",
     i = 0,
     isTag,
     text;
@@ -37,3 +44,6 @@ function fadeIn(el) {
 }
 
 fadeIn(el);
+
+
+

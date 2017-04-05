@@ -1,20 +1,49 @@
 {% extends "index.html" %}
 
 {% block content %}
-    <div class="text-center" id="test">
-        <a id="" data="In progress" href="#" onclick="getDataToStatus(this.getAttribute('data'));">Click to do something</a>
-        <a id="" data="Review" href="#" onclick="getDataToStatus(this.getAttribute('data'));">Click to do something</a>
-        <a id="" data="Done" href="#" onclick="getDataToStatus(this.getAttribute('data'));">Click to do something</a>
-        <a id="" data="New" href="#" onclick="getDataToStatus(this.getAttribute('data'));">Click to do something</a>
-    </div>
-    <div class="container-fluid">
-        <div id="logo_landing">
-            <div id="logo_letter_landing">
-                <img id="logo_logo" src="../static/img/logo_short.png" alt="logo_letter">
+
+
+
+    <section id="header_section">
+
+        <div class="container-fluid">
+            <div id="logo_container">
+                <div id="logo_landing">
+                    <div id="logo_block"></div>
+                </div>
+                <div class="scroll">
+                    <div class='scroll' id='scroll'>
+                        <a  class='btn_scroll_down' href='#board_section'></br>
+                        <img id="scroll_down" src='/static/img/btn_scroll_down.svg' width='50px'>
+                        </a>
+                    </div>
+                </div>
             </div>
-            <div id="logo_block"></div>
+            <div class="row" id="fadein">
+                <div class="col-md-6" >
+
+                </div>
+                <div class="col-md-6">
+
+                </div>
+            </div>
         </div>
-    </div>
-    <script src="../static/js/logo_anim.js"></script>
+
+
+
+    </section>
+    <section id="board_section" style="background-color: #1b6d85">
+
+        <div class="container-fluid">
+            <div id="header_landing">
+
+
+
+            </div>
+        </div>
+
+    </section>
+
+
 {% endblock %}
 
