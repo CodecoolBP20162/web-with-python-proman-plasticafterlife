@@ -6,7 +6,7 @@
 
 section {
     width: 100%;
-    height: 100vh;
+    min-height: 100vh;
     display: -webkit-flex;
     display: flex;
     -webkit-flex-wrap: wrap;
@@ -68,8 +68,11 @@ section {
     display: inline-table;
     padding: 50px 50px 50px 50px;
     background-color: #3c3c3c;
-    margin: 2% 20% 2% 20%;
+    margin: 10px 10px 10px 10px;
 
+}
+#boards{
+    margin 15px 0 15px 0;
 }
 
  /* Dropdown Button */

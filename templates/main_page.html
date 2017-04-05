@@ -31,12 +31,12 @@
         <div class="container-fluid">
             <div id="header_landing">
 
-                <h4 class="modal-header"><strong>Your boards</strong></h4>
+
 
             </div>
             <div class="boards">
                 <!-- boards's content -->
-
+                <h4 class="modal-header"><strong>Your boards</strong></h4>
                 <label class="control-label"><input class="form-group" type="text" placeholder="Add a new board" id="newBoard"></label>
 
                 <button class="btn btn-primary" id="addNewBoards">Add a new Board</button>
@@ -45,35 +45,34 @@
                     <!-- inserted here -->
                 </div>
             </div>
-        </div>
-        <div class="cards" id="card_block">
-        <!-- cards's content -->
-        <h4 class="modal-header"><strong>Your cards</strong></h4>
 
-        <div class="status" id="block1">
-            <div class="status_header">
-                <h3><strong>New</strong></h3>
-            </div>
-            <div class="container_status_new"></div>
-            <div class="Status" id="newStatus">
-                <div class="status_add_new">
-                    <label class="control-label"><input class="form-group" type="text" placeholder="Add a new task" id="newStatusTask"></label>
-                    <button type="button" class="btn btn-save" id="saveToNew">Save</button>
+            <div class="cards" id="card_block">
+            <!-- cards's content -->
+                <h4 class="modal-header"><strong>Your cards</strong></h4>
 
-                    <div id="new-cards">
-                        <!-- inserted elements -->
+                <div class="status">
+                    <div class="status_header">
+                        <h3><strong>New</strong></h3>
                     </div>
+                    <div class="container_status_new"></div>
+                        <div class="Status" id="newStatus">
+                            <div class="status_add_new">
+                                <label class="control-label"><input class="form-group" type="text" placeholder="Add a new task" id="newStatusTask"></label>
+                                <button type="button" class="btn btn-save" id="saveToNew">Save</button>
 
+                                <div id="new-cards">
+                                    <!-- inserted elements -->
+                                </div>
+                                <button class="btn btn-primary" id="back-to-boards">Back to Boards</button>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-            </div>
+
+            <div>
         </div>
-        <div>
-            <button class="btn btn-primary" id="back-to-boards">Back to Boards</button>
-        </div>
+
     </div>
-
-
-    </section>
 
 
 {% endblock %}
