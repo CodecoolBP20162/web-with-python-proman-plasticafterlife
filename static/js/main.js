@@ -188,6 +188,7 @@ function Controller() {
         }
     };
 
+
     this.addContentToCard = function () {
         var cardObj = new Card();                                       // create a card object
         cardObj.content = $('#newStatusTask').val();
@@ -195,8 +196,20 @@ function Controller() {
     };
 
     this.insertToBody = function (cardObject) {
-        var card = $('<p>').attr('data-cardid', cardObject.cardId).text(cardObject.content);
-        $('#new-cards').append($('<div>').append(card));
+        var card = $('<p>').attr('data-cardid', cardObject.cardId).attr('ondragstart', "dragStart(event)")
+            .attr('draggable', 'true').text(cardObject.content);
+        if (cardObject.status === "Done") {
+            $('#done').append(card);
+        }
+        else if (cardObject.status === "Planning") {
+            $('#planning').append(card);
+        }
+        else if (cardObject.status === "In progress") {
+            $('#in_progress').append(card);
+        }
+        else {
+            $('#new').append(card);
+        }
     };
 
 }
@@ -207,7 +220,8 @@ $(document).ready(function () {
     var currentBoardObject;  // this will be the current boardObject
 
     var getBoards = function () {    // call automatically
-        $('.cards').hide(); // hide by default
+        $('.cards').hide();
+        $('.dataContainer').hide(); // hide by default
         controller.listBoards(boardsArray);
     }();
 
@@ -226,7 +240,8 @@ $(document).ready(function () {
 
     $("#boards").on('click', 'button', function switchToCards() {
         $('.boards').hide();
-        $('#new-cards').empty();    // have to empty the new-cards elements
+        $('#new-cards').empty();
+        $('.dataContainer').show();
         $('.cards').fadeIn();
         var boardId = $(this).attr('data-boardid');
         currentBoardObject = controller.getBoardById(boardsArray, boardId);
@@ -244,9 +259,90 @@ $(document).ready(function () {
 
     $('#back-to-boards').click(function switchBackBoards() {
         $('.cards').hide();
+        $('.dataContainer').hide();
         $('#new-cards').empty();    // have to empty the new-cards elements
         $('.boards').fadeIn();
     });
+
+    var modal = document.getElementById('myModal');
+    var btn = document.getElementById("myBtn");
+    var span = document.getElementsByClassName("close")[0];
+    btn.onclick = function () {
+        modal.style.display = "block";
+    };
+
+    span.onclick = function () {
+        modal.style.display = "none";
+    };
+
+    window.onclick = function (event) {
+        if (event.target == modal) {
+            modal.style.display = "none";
+        }
+    };
+    document.getElementById('add').addEventListener('click', add);
+
 });
 
+// plus
 
+// function get_todos() {
+//     var elements = new Array;
+//     var elements_str = localStorage.getItem('todo');
+//     if (elements_str !== null) {
+//         elements = JSON.parse(elements_str);
+//     }
+//     return elements;
+// }
+
+// function add() {
+//     var task = document.getElementById('task').value;
+//     var elements = get_todos();
+//     elements.push(task);
+//     localStorage.setItem('todo', JSON.stringify(elements));
+//     show();
+
+//     return false;
+// }
+
+// function remove() {
+//     var id = this.getAttribute('id');
+//     var elements = get_todos();
+//     elements.splice(id, 1);
+//     localStorage.setItem('todo', JSON.stringify(elements));
+//     show();
+//     return false;
+// }
+
+// function show() {
+//     var todos = "";
+//     var html = '';
+//     var id = '01';
+//     for (var i = 0; i < todos.length; i++) {
+//         html += '<p ondragstart="dragStart(event)" draggable="true" id=" + id">' + todos[i] + '<button class="remove" id="' + i + '">X</button></p>';
+//     };
+//     document.getElementsByClassName('blocks').innerHTML = html;
+
+//     var buttons = document.getElementsByClassName('remove');
+//     for (var i = 0; i < buttons.length; i++) {
+//         buttons[i].addEventListener('click', remove);
+//     };
+// }
+
+
+
+function dragStart(event) {
+    event.dataTransfer.setData("Text", event.target.id);
+
+}
+
+function allowDrop(event) {
+    event.preventDefault();
+}
+
+function drop(event) {
+    event.preventDefault();
+    var data = event.dataTransfer.getData("Text");
+    event.target.appendChild(document.getElementById(data));
+
+}
