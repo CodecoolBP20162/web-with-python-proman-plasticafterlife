@@ -17,7 +17,7 @@ def index():
     return render_template("main_page.html")
 
 
-@app.route('/boards', methods=['GET', 'POST'])
+@app.route('/boards', methods=['GET'])
 def boards():
     return render_template('boards.html')
 
@@ -27,7 +27,9 @@ def get_boards():
     boards = Board.select()
     boards_dict = {}
     for board in boards:
-        boards_dict[str(board.id)] = {'title': board.title, 'id': board.id}
+        boards_dict[str(board.id)] = {
+            'title': board.title,
+            'id': board.id}
 
     return jsonify({'boards': boards_dict})
 
@@ -35,11 +37,14 @@ def get_boards():
 @app.route('/get-cards/<boardid>')
 def get_cards(boardid):
     cards = Card.select().where(Card.board == boardid)
-    cards_dict = {}
+    cards_dict = []
     for card in cards:
-        cards_dict[str(card.id)] = {'id': card.id, 'content': card.content, 'status': card.status}
+        cards_dict.append({
+            'id': card.id,
+            'content': card.content,
+            'status': card.status})
 
-    return jsonify({'cards': cards_dict})
+    return jsonify(cards_dict)
 
 
 @app.route('/post-cards', methods=['POST'])
@@ -49,6 +54,13 @@ def post_cards():
     card_status = request.form['status']
     board_id = request.form['board_id']
     Card.create(content=card_content, board=board_id, status=card_status)
+    return jsonify({"status": 'ok'})
+
+
+@app.route('/post-boards', methods=['POST'])
+def post_boards():
+    board_title = request.form['title']
+    Board.create(title=board_title)
     return jsonify({"status": 'ok'})
 
 
